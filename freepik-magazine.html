@@ -28,7 +28,6 @@
       flex-direction: column;
     }
 
-    /* Tabs */
     .tabs {
       display: flex;
       gap: 2px;
@@ -67,7 +66,6 @@
       border-radius: 2px 2px 0 0;
     }
 
-    /* Viewer */
     .viewer-area {
       padding: 20px 0 32px;
       flex: 1;
@@ -75,8 +73,6 @@
       flex-direction: column;
     }
 
-
-    /* iframe big */
     .iframe-wrapper {
       position: relative;
       width: 100%;
@@ -131,6 +127,7 @@
 
     <div class="tabs" id="tabs"></div>
 
+    <div class="viewer-area">
       <div class="iframe-wrapper">
         <div class="loading" id="loading">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div>
@@ -153,14 +150,10 @@
     const tabs    = document.getElementById('tabs');
     const frame   = document.getElementById('frame');
     const loading = document.getElementById('loading');
-    const title   = document.getElementById('viewerTitle');
-    const count   = document.getElementById('navCount');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
 
     issues.forEach((issue, i) => {
       const btn = document.createElement('button');
-      btn.className = 'tab' + (i === 0 ? ' active' : '');
+      btn.className = 'tab' + (i === 3 ? ' active' : '');
       btn.textContent = issue.label;
       btn.addEventListener('click', () => loadIssue(i));
       tabs.appendChild(btn);
@@ -169,18 +162,12 @@
     function loadIssue(index) {
       current = index;
       document.querySelectorAll('.tab').forEach((b, i) => b.classList.toggle('active', i === index));
-      title.textContent = issues[index].label;
-      count.textContent = `${index + 1} / ${issues.length}`;
-      prevBtn.disabled = index === 0;
-      nextBtn.disabled = index === issues.length - 1;
       loading.classList.remove('hidden');
       frame.src = '';
       setTimeout(() => { frame.src = issues[index].url; }, 80);
     }
 
     frame.addEventListener('load', () => loading.classList.add('hidden'));
-    prevBtn.addEventListener('click', () => { if (current > 0) loadIssue(current - 1); });
-    nextBtn.addEventListener('click', () => { if (current < issues.length - 1) loadIssue(current + 1); });
 
     loadIssue(3);
   </script>
